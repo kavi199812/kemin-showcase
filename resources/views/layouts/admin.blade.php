@@ -8,6 +8,9 @@
 
     <title>{{ $title ?? 'Admin' }} — Kemin Showcase Administration</title>
 
+    <link rel="icon" type="image/webp" href="{{ asset('favicon.webp') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +24,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                    <img src="{{ asset('images/kemin-logo.svg') }}" alt="Kemin Exports" class="h-8 w-auto">
+                    <img src="{{ asset('images/kemin-logo.webp') }}" alt="Kemin Exports" class="h-8 w-auto object-contain">
                 </a>
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-gold-500/10 text-gold-400 border border-gold-500/30">
                     Admin

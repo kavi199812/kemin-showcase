@@ -130,7 +130,7 @@
     <!-- Top Navigation Strip -->
     <header class="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
-            <img src="{{ asset('images/kemin-logo.svg') }}" alt="Kemin Exports" class="h-8 sm:h-9 w-auto" />
+            <img src="{{ asset('images/kemin-logo.webp') }}" alt="Kemin Exports" class="h-8 sm:h-10 w-auto object-contain" />
         </div>
         <a
             href="{{ route('admin.login') }}"

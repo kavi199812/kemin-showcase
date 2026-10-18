@@ -8,6 +8,9 @@
 
     <title>{{ $title ?? 'Admin Authentication' }} — Kemin Exports</title>
 
+    <link rel="icon" type="image/webp" href="{{ asset('favicon.webp') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +20,7 @@
 <body class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-ink-950 text-white selection:bg-gold-500 selection:text-ink-950">
     <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <a href="{{ route('landing') }}" class="inline-block focus:outline-none focus:ring-2 focus:ring-gold-500">
-            <img class="mx-auto h-12 w-auto" src="{{ asset('images/kemin-logo.svg') }}" alt="Kemin Exports">
+            <img class="mx-auto h-12 w-auto object-contain" src="{{ asset('images/kemin-logo.webp') }}" alt="Kemin Exports">
         </a>
         <div class="mt-4 flex items-center justify-center gap-2">
             <span class="w-1.5 h-1.5 rounded-full bg-gold-500"></span>
