@@ -21,8 +21,8 @@ class SettingsService
         'global_lockout_threshold' => 30,
         'presenter_session_hours' => 8,
         'presenter_session_version' => 1,
-        'hero_line_1' => 'PRECISION',
-        'hero_line_2' => 'Meets Craftsmanship',
+        'hero_line_1' => 'Kemin Exports',
+        'hero_line_2' => 'Products Catalog',
         'tagline' => 'Packaging & Print Manufacturer, Sri Lanka',
         'stats_json' => '[{"label":"Years of Excellence","value":"15+"},{"label":"Global Clients","value":"120+"},{"label":"Export Destinations","value":"25+"}]',
     ];

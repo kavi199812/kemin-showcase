@@ -45,9 +45,9 @@ class SettingsManager extends Component
     {
         Gate::authorize('manage', Setting::class);
 
-        $this->pinLength = (int) $settings->get('pin_length', 6);
-        $this->heroLine1 = (string) $settings->get('hero_line_1', 'PRECISION');
-        $this->heroLine2 = (string) $settings->get('hero_line_2', 'Meets Craftsmanship');
+        $this->pinLength = (int) $settings->get('pin_length', 4);
+        $this->heroLine1 = (string) $settings->get('hero_line_1', 'Kemin Exports');
+        $this->heroLine2 = (string) $settings->get('hero_line_2', 'Products Catalog');
         $this->tagline = (string) $settings->get('tagline', 'Packaging & Print Manufacturer, Sri Lanka');
         $this->presenterSessionHours = (int) $settings->get('presenter_session_hours', 8);
 

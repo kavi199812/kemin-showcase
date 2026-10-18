@@ -69,8 +69,8 @@ class Home extends Component
         }
 
         return view('livewire.showcase.home', [
-            'heroLine1' => $settings->get('hero_line_1', 'PRECISION'),
-            'heroLine2' => $settings->get('hero_line_2', 'Meets Craftsmanship'),
+            'heroLine1' => $settings->get('hero_line_1', 'Kemin Exports'),
+            'heroLine2' => $settings->get('hero_line_2', 'Products Catalog'),
             'tagline' => $settings->get('tagline', 'Packaging & Print Manufacturer, Sri Lanka'),
             'stats' => $stats,
             'featuredProducts' => $featuredProducts,
