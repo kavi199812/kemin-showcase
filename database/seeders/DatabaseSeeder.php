@@ -30,13 +30,13 @@ class DatabaseSeeder extends Seeder
         );
 
         // 2. Settings & Presenter PIN
-        // Default PIN: 839162 (6 digits, non-trivial, verified)
-        $defaultPin = '839162';
+        // Default PIN: 8391 (4 digits, non-trivial, verified)
+        $defaultPin = '8391';
         $pinHash = Hash::make($defaultPin);
 
         $settings = [
             'presenter_pin_hash' => $pinHash,
-            'pin_length' => '6',
+            'pin_length' => '4',
             'lockout_max_attempts' => '5',
             'lockout_window_minutes' => '15',
             'lockout_minutes' => '15',

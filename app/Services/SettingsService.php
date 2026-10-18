@@ -14,7 +14,7 @@ class SettingsService
      */
     protected array $defaults = [
         'presenter_pin_hash' => null,
-        'pin_length' => 6,
+        'pin_length' => 4,
         'lockout_max_attempts' => 5,
         'lockout_window_minutes' => 15,
         'lockout_minutes' => 15,

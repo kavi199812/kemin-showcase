@@ -6,7 +6,7 @@ use App\Services\SettingsService;
 
 beforeEach(function () {
     app(SettingsService::class)->clearCache();
-    app(PinService::class)->updatePin('839162');
+    app(PinService::class)->updatePin('8391');
 });
 
 test('guest cannot access showcase without unlocking presenter pin', function () {

@@ -108,11 +108,25 @@
     }"
     x-on:pin-error.window="triggerShake()"
 >
-    <!-- Background Ambient Lighting / Luxury Mesh -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- Background Video with Luxury Dark Overlay & Ambient Lighting -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            class="absolute inset-0 w-full h-full object-cover opacity-35 scale-105"
+        >
+            <source src="{{ asset('videos/hero-background.mp4') }}" type="video/mp4">
+        </video>
+        <!-- Dark ink gradient overlays for contrast and readability -->
+        <div class="absolute inset-0 bg-ink-950/70 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/75 to-ink-950/85"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,20,20,0.15)_0%,#0b0b0b_90%)]"></div>
+
+        <!-- Ambient Glow Orbs -->
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-gold-600/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-copper-700/15 rounded-full blur-3xl"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,20,20,0)_0%,#0b0b0b_90%)]"></div>
     </div>
 
     <!-- Top Navigation Strip -->

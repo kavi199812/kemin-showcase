@@ -14,7 +14,7 @@ use Livewire\Component;
 #[Title('Presenter Unlock — Kemin Exports')]
 class Landing extends Component
 {
-    public int $pinLength = 6;
+    public int $pinLength = 4;
 
     public string $pin = '';
 
@@ -40,7 +40,7 @@ class Landing extends Component
             return redirect()->route('showcase.home');
         }
 
-        $this->pinLength = max(4, (int) $settings->get('pin_length', 6));
+        $this->pinLength = (int) $settings->get('pin_length', 4);
 
         // Check if device or system is locked out
         $lockout = $pinService->checkLockout($request->ip());

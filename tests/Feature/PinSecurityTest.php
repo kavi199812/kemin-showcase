@@ -21,6 +21,7 @@ test('pin service rejects trivial pins', function () {
         expect($pinService->isTrivialPin($pin))->toBeTrue("Failed asserting that {$pin} is trivial");
     }
 
+    expect($pinService->isTrivialPin('8391'))->toBeFalse();
     expect($pinService->isTrivialPin('839162'))->toBeFalse();
     expect($pinService->isTrivialPin('741953'))->toBeFalse();
 });
@@ -29,7 +30,7 @@ test('pin service verifies valid pin using argon2id and generates presenter sess
     $settings = app(SettingsService::class);
     $pinService = app(PinService::class);
 
-    $pin = '839162';
+    $pin = '8391';
     $pinService->updatePin($pin);
 
     $storedHash = Setting::where('key', 'presenter_pin_hash')->value('value');
@@ -47,9 +48,9 @@ test('pin service verifies valid pin using argon2id and generates presenter sess
 
 test('pin verification fails with incorrect pin and logs attempt', function () {
     $pinService = app(PinService::class);
-    $pinService->updatePin('839162');
+    $pinService->updatePin('8391');
 
-    $result = $pinService->verify('999999', '127.0.0.2');
+    $result = $pinService->verify('9876', '127.0.0.2');
 
     expect($result['success'])->toBeFalse();
     expect(PinAttempt::where('ip', '127.0.0.2')->where('succeeded', false)->exists())->toBeTrue();
@@ -57,12 +58,12 @@ test('pin verification fails with incorrect pin and logs attempt', function () {
 
 test('rate limiting locks out device after max failed attempts', function () {
     $pinService = app(PinService::class);
-    $pinService->updatePin('839162');
+    $pinService->updatePin('8391');
 
     $ip = '192.168.1.100';
 
     for ($i = 0; $i < 5; $i++) {
-        $pinService->verify('999999', $ip);
+        $pinService->verify('9876', $ip);
     }
 
     $lockout = $pinService->checkLockout($ip);
