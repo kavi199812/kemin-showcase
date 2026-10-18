@@ -107,21 +107,20 @@
     }"
     x-on:pin-error.window="triggerShake()"
 >
-    <!-- Full-Screen Video Background with Luxury Dark Gradient Overlay -->
+    <!-- Full-Screen Video Background with Refined Luxury Overlay -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <video
             autoplay
             loop
             muted
             playsinline
-            class="w-full h-full object-cover opacity-45 scale-105"
+            class="w-full h-full object-cover opacity-85"
         >
             <source src="{{ asset('videos/hero-background.mp4') }}" type="video/mp4">
         </video>
-        <!-- Dark ink gradient overlays for contrast and readability -->
-        <div class="absolute inset-0 bg-ink-950/70 mix-blend-multiply"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/65 to-ink-950/80"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,20,20,0.1)_0%,#0b0b0b_90%)]"></div>
+        <!-- Light contrast overlay so video is bright and clearly visible -->
+        <div class="absolute inset-0 bg-ink-950/35"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-ink-950/60"></div>
 
         <!-- Ambient Luxury Glow Orbs -->
         <div class="absolute -top-32 -left-32 w-80 h-80 bg-gold-600/10 rounded-full blur-3xl"></div>
@@ -149,13 +148,13 @@
         <!-- Eyebrow & Brand Title -->
         <div class="mb-3 sm:mb-4">
             <x-ui.eyebrow text="CONFIDENTIAL CLIENT SHOWCASE" class="justify-center mb-1.5" />
-            <h1 class="font-display font-bold uppercase tracking-tight text-white text-3xl sm:text-5xl md:text-5xl leading-tight">
+            <h1 class="font-display font-bold uppercase tracking-tight text-white text-3xl sm:text-5xl md:text-5xl leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
                 {{ $heroLine1 }}
             </h1>
-            <p class="font-display font-light text-ink-300 text-lg sm:text-2xl mt-0.5 tracking-wide">
+            <p class="font-display font-light text-ink-200 text-lg sm:text-2xl mt-0.5 tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                 {{ $heroLine2 }}
             </p>
-            <p class="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink-500">
+            <p class="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink-400 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                 {{ $tagline }}
             </p>
         </div>
