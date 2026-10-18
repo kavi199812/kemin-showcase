@@ -145,17 +145,13 @@
 
     <!-- Center Hero & PIN Section (Fitted in viewport with zero scroll) -->
     <main class="relative z-10 max-w-lg mx-auto w-full my-auto text-center shrink-0 py-1">
-        <!-- Eyebrow & Brand Title -->
-        <div class="mb-3 sm:mb-4">
-            <x-ui.eyebrow text="CONFIDENTIAL CLIENT SHOWCASE" class="justify-center mb-1.5" />
+        <!-- Brand Title -->
+        <div class="mb-4 sm:mb-5">
             <h1 class="font-display font-bold uppercase tracking-tight text-white text-3xl sm:text-5xl md:text-5xl leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
                 {{ $heroLine1 }}
             </h1>
             <p class="font-display font-light text-ink-200 text-lg sm:text-2xl mt-0.5 tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                 {{ $heroLine2 }}
-            </p>
-            <p class="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink-400 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
-                {{ $tagline }}
             </p>
         </div>
 
@@ -183,9 +179,6 @@
                     <span class="text-[11px] uppercase tracking-widest font-sans font-semibold text-ink-300">
                         Enter Presenter Security PIN
                     </span>
-                    <p class="text-[10px] text-ink-500 mt-0.5">
-                        Showcase will automatically unlock upon entering the last digit.
-                    </p>
                 </div>
 
                 @if($errorMessage)
@@ -251,11 +244,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"/>
                         </svg>
                     </button>
-                </div>
-
-                <div class="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-ink-500">
-                    <span class="w-1.5 h-1.5 rounded-full bg-gold-500/70"></span>
-                    <span>Confidential Meeting Display &middot; Auto-destructs on idle</span>
                 </div>
             </div>
         @endif
