@@ -10,7 +10,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.auth')]
+#[Layout('layouts.landing')]
 #[Title('Presenter Unlock — Kemin Exports')]
 class Landing extends Component
 {

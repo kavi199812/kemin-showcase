@@ -1,5 +1,5 @@
 <div
-    class="min-h-screen relative flex flex-col justify-between overflow-hidden bg-ink-950 text-white selection:bg-gold-500 selection:text-ink-950 px-4 py-8 sm:px-6 lg:px-8"
+    class="h-screen w-screen max-h-screen overflow-hidden relative flex flex-col justify-between bg-ink-950 text-white selection:bg-gold-500 selection:text-ink-950 p-4 sm:p-6 lg:p-8"
     x-data="{
         pinLength: @js($pinLength),
         digits: Array(@js($pinLength)).fill(''),
@@ -60,7 +60,6 @@
             this.checkAndSubmit();
         },
         pressKey(digit) {
-            // Virtual keypad support for presentation tablets/mobile
             for (let i = 0; i < this.pinLength; i++) {
                 if (!this.digits[i]) {
                     this.digits[i] = digit.toString();
@@ -108,35 +107,35 @@
     }"
     x-on:pin-error.window="triggerShake()"
 >
-    <!-- Background Video with Luxury Dark Overlay & Ambient Lighting -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <!-- Full-Screen Video Background with Luxury Dark Gradient Overlay -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <video
             autoplay
             loop
             muted
             playsinline
-            class="absolute inset-0 w-full h-full object-cover opacity-35 scale-105"
+            class="w-full h-full object-cover opacity-45 scale-105"
         >
             <source src="{{ asset('videos/hero-background.mp4') }}" type="video/mp4">
         </video>
         <!-- Dark ink gradient overlays for contrast and readability -->
         <div class="absolute inset-0 bg-ink-950/70 mix-blend-multiply"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/75 to-ink-950/85"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,20,20,0.15)_0%,#0b0b0b_90%)]"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/65 to-ink-950/80"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,20,20,0.1)_0%,#0b0b0b_90%)]"></div>
 
-        <!-- Ambient Glow Orbs -->
-        <div class="absolute -top-40 -left-40 w-96 h-96 bg-gold-600/10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-copper-700/15 rounded-full blur-3xl"></div>
+        <!-- Ambient Luxury Glow Orbs -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 bg-gold-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-copper-700/15 rounded-full blur-3xl"></div>
     </div>
 
     <!-- Top Navigation Strip -->
-    <header class="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between">
+    <header class="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
-            <img src="{{ asset('images/kemin-logo.svg') }}" alt="Kemin Exports" class="h-10 w-auto" />
+            <img src="{{ asset('images/kemin-logo.svg') }}" alt="Kemin Exports" class="h-8 sm:h-9 w-auto" />
         </div>
         <a
             href="{{ route('admin.login') }}"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-ink-800 hover:border-gold-500/50 text-[11px] font-sans uppercase tracking-widest text-ink-300 hover:text-white transition-colors"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-ink-700 hover:border-gold-500/50 bg-ink-900/60 backdrop-blur-sm text-[11px] font-sans uppercase tracking-widest text-ink-300 hover:text-white transition-colors"
         >
             <svg class="w-3.5 h-3.5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -145,59 +144,59 @@
         </a>
     </header>
 
-    <!-- Center Hero & PIN Card -->
-    <main class="relative z-10 max-w-xl mx-auto w-full my-auto text-center py-6">
+    <!-- Center Hero & PIN Section (Fitted in viewport with zero scroll) -->
+    <main class="relative z-10 max-w-lg mx-auto w-full my-auto text-center shrink-0 py-1">
         <!-- Eyebrow & Brand Title -->
-        <div class="mb-8">
-            <x-ui.eyebrow text="CONFIDENTIAL CLIENT SHOWCASE" class="justify-center mb-3" />
-            <h1 class="font-display font-bold uppercase tracking-tight text-white text-5xl sm:text-6xl md:text-7xl leading-none">
+        <div class="mb-3 sm:mb-4">
+            <x-ui.eyebrow text="CONFIDENTIAL CLIENT SHOWCASE" class="justify-center mb-1.5" />
+            <h1 class="font-display font-bold uppercase tracking-tight text-white text-3xl sm:text-5xl md:text-5xl leading-tight">
                 {{ $heroLine1 }}
             </h1>
-            <p class="font-display font-light text-ink-300 text-2xl sm:text-3xl mt-1 tracking-wide">
+            <p class="font-display font-light text-ink-300 text-lg sm:text-2xl mt-0.5 tracking-wide">
                 {{ $heroLine2 }}
             </p>
-            <p class="mt-3 text-xs uppercase tracking-[0.2em] text-ink-500">
+            <p class="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink-500">
                 {{ $tagline }}
             </p>
         </div>
 
         <!-- Lockout Notice or PIN Input Container -->
         @if($isLockedOut)
-            <div class="bg-ink-900 border border-danger/40 rounded-sm p-6 shadow-2xl relative">
-                <div class="w-12 h-12 rounded-full bg-danger/10 border border-danger/40 mx-auto flex items-center justify-center text-danger mb-3">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="bg-ink-900/95 backdrop-blur-md border border-danger/40 rounded-sm p-5 shadow-2xl relative">
+                <div class="w-10 h-10 rounded-full bg-danger/10 border border-danger/40 mx-auto flex items-center justify-center text-danger mb-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                     </svg>
                 </div>
-                <h3 class="font-display text-lg uppercase tracking-wider text-white">Access Temporarily Suspended</h3>
-                <p class="text-xs text-ink-300 mt-2 leading-relaxed">
+                <h3 class="font-display text-base uppercase tracking-wider text-white">Access Temporarily Suspended</h3>
+                <p class="text-xs text-ink-300 mt-1.5 leading-relaxed">
                     {{ $lockoutMessage }}
                 </p>
             </div>
         @else
             <div
-                class="bg-ink-900/90 backdrop-blur-md border border-ink-800 rounded-sm p-6 sm:p-8 shadow-2xl relative transition-transform duration-300"
+                class="bg-ink-900/85 backdrop-blur-md border border-ink-800 rounded-sm p-4 sm:p-5 shadow-2xl relative transition-transform duration-300"
                 :class="{ 'animate-shake border-danger/80': shaking }"
             >
-                <div class="absolute -top-px left-12 right-12 h-px bg-gradient-to-r from-transparent via-gold-500/50 to-transparent"></div>
+                <div class="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-gold-500/50 to-transparent"></div>
 
-                <div class="mb-6">
-                    <span class="text-xs uppercase tracking-widest font-sans font-semibold text-ink-300">
+                <div class="mb-3">
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-semibold text-ink-300">
                         Enter Presenter Security PIN
                     </span>
-                    <p class="text-[11px] text-ink-500 mt-1">
+                    <p class="text-[10px] text-ink-500 mt-0.5">
                         Showcase will automatically unlock upon entering the last digit.
                     </p>
                 </div>
 
                 @if($errorMessage)
-                    <div class="mb-5 p-3 rounded-xs bg-danger/10 border border-danger/40 text-danger text-xs font-sans tracking-wide">
+                    <div class="mb-3 p-2 rounded-xs bg-danger/10 border border-danger/40 text-danger text-xs font-sans tracking-wide">
                         {{ $errorMessage }}
                     </div>
                 @endif
 
-                <!-- Segmented PIN Digits Box -->
-                <div class="flex items-center justify-center gap-2 sm:gap-3.5 mb-6" @paste="handlePaste($event)">
+                <!-- 4-Digit Segmented PIN Input Box -->
+                <div class="flex items-center justify-center gap-2.5 sm:gap-3.5 mb-3" @paste="handlePaste($event)">
                     <template x-for="(digit, idx) in digits" :key="idx">
                         <input
                             :id="`pin-digit-${idx}`"
@@ -208,9 +207,9 @@
                             :value="digit"
                             @input="handleInput(idx, $event)"
                             @keydown="handleKeydown(idx, $event)"
-                            class="w-11 h-14 sm:w-14 sm:h-16 text-center font-display font-bold text-2xl text-gold-400 bg-ink-800 border rounded-sm transition-all duration-200 focus:outline-none focus:scale-105"
+                            class="w-12 h-13 sm:w-14 sm:h-15 text-center font-display font-bold text-2xl text-gold-400 bg-ink-800/95 border rounded-sm transition-all duration-200 focus:outline-none focus:scale-105"
                             :class="{
-                                'border-gold-500 ring-2 ring-gold-500/30 bg-ink-800/90': digits[idx] !== '',
+                                'border-gold-500 ring-2 ring-gold-500/30 bg-ink-800': digits[idx] !== '',
                                 'border-ink-700 hover:border-ink-600': digits[idx] === '',
                                 'border-danger': shaking
                             }"
@@ -219,34 +218,34 @@
                     </template>
                 </div>
 
-                <!-- On-Screen Keypad for Fast iPad / Tablet Presenter Input -->
-                <div class="max-w-[280px] mx-auto grid grid-cols-3 gap-2 pt-2">
+                <!-- On-Screen Virtual Keypad (Compact & Ergonomic) -->
+                <div class="max-w-[240px] sm:max-w-[260px] mx-auto grid grid-cols-3 gap-1.5 pt-1">
                     <template x-for="n in [1, 2, 3, 4, 5, 6, 7, 8, 9]" :key="n">
                         <button
                             type="button"
                             @click="pressKey(n)"
-                            class="h-11 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700 text-white font-display font-medium text-lg hover:border-gold-500/40 active:scale-95 transition-all cursor-pointer"
+                            class="h-9 sm:h-10 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700/80 text-white font-display font-medium text-base hover:border-gold-500/40 active:scale-95 transition-all cursor-pointer"
                             x-text="n"
                         ></button>
                     </template>
                     <button
                         type="button"
                         @click="clearAll()"
-                        class="h-11 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700 text-ink-400 hover:text-white text-[11px] font-sans uppercase tracking-wider active:scale-95 transition-all cursor-pointer"
+                        class="h-9 sm:h-10 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700/80 text-ink-400 hover:text-white text-[10px] font-sans uppercase tracking-wider active:scale-95 transition-all cursor-pointer"
                     >
                         Clear
                     </button>
                     <button
                         type="button"
                         @click="pressKey(0)"
-                        class="h-11 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700 text-white font-display font-medium text-lg hover:border-gold-500/40 active:scale-95 transition-all cursor-pointer"
+                        class="h-9 sm:h-10 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700/80 text-white font-display font-medium text-base hover:border-gold-500/40 active:scale-95 transition-all cursor-pointer"
                     >
                         0
                     </button>
                     <button
                         type="button"
                         @click="backspaceKey()"
-                        class="h-11 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700 text-ink-400 hover:text-white flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+                        class="h-9 sm:h-10 rounded-sm bg-ink-800/80 hover:bg-ink-700/80 border border-ink-700/80 text-ink-400 hover:text-white flex items-center justify-center active:scale-95 transition-all cursor-pointer"
                         aria-label="Backspace"
                     >
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -255,18 +254,18 @@
                     </button>
                 </div>
 
-                <div class="mt-6 flex items-center justify-center gap-2 text-[11px] text-ink-500">
+                <div class="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-ink-500">
                     <span class="w-1.5 h-1.5 rounded-full bg-gold-500/70"></span>
-                    <span>Constant-time Argon2id Encryption</span>
+                    <span>Confidential Meeting Display &middot; Auto-destructs on idle</span>
                 </div>
             </div>
         @endif
     </main>
 
-    <!-- Bottom Security Bar -->
-    <footer class="relative z-10 max-w-7xl mx-auto w-full text-center">
-        <p class="text-[10px] uppercase tracking-widest text-ink-500">
-            &copy; {{ date('Y') }} Kemin Exports &middot; Internal Sales Presentation System &middot; Strict No-Index
+    <!-- Bottom Footer Strip -->
+    <footer class="relative z-10 w-full text-center shrink-0 pb-1">
+        <p class="text-[10px] uppercase tracking-widest text-ink-500 font-sans">
+            &copy; {{ date('Y') }} Kemin Exports &middot; Internal Sales Showcase &middot; Confidential
         </p>
     </footer>
 </div>
