@@ -118,6 +118,39 @@ class SettingsManager extends Component
         $this->dispatch('notify', message: 'Security threshold settings saved.');
     }
 
+    public string $migrationOutput = '';
+
+    public function runMigrations(): void
+    {
+        Gate::authorize('manage', Setting::class);
+
+        try {
+            Artisan::call('migrate', ['--force' => true]);
+            $this->migrationOutput = trim(Artisan::output()) ?: 'Database is up to date. (Nothing to migrate)';
+
+            activity()
+                ->causedBy(auth()->user())
+                ->log('Admin executed database migrations via Settings page');
+
+            $this->dispatch('notify', message: 'Database migrations executed successfully.');
+        } catch (\Throwable $e) {
+            $this->migrationOutput = 'Error: '.$e->getMessage();
+            $this->dispatch('notify', message: 'Migration failed: '.substr($e->getMessage(), 0, 80), type: 'danger');
+        }
+    }
+
+    public function clearCache(): void
+    {
+        Gate::authorize('manage', Setting::class);
+
+        try {
+            Artisan::call('optimize:clear');
+            $this->dispatch('notify', message: 'System and configuration caches cleared.');
+        } catch (\Throwable $e) {
+            $this->dispatch('notify', message: 'Cache clear failed: '.substr($e->getMessage(), 0, 80), type: 'danger');
+        }
+    }
+
     public function runDatabaseBackup(): void
     {
         try {
@@ -130,9 +163,20 @@ class SettingsManager extends Component
 
     public function render(SettingsService $settings): View
     {
+        $pendingMigrationsCount = 0;
+        try {
+            $migrator = app('migrator');
+            $files = $migrator->getMigrationFiles(database_path('migrations'));
+            $ran = $migrator->getRepository()->getRan();
+            $pendingMigrationsCount = count(array_diff(array_keys($files), $ran));
+        } catch (\Throwable) {
+            $pendingMigrationsCount = 0;
+        }
+
         return view('livewire.admin.settings.settings-manager', [
             'sessionVersion' => $settings->get('presenter_session_version', 1),
             'authMode' => config('app.showcase_admin_auth', 'password'),
+            'pendingMigrationsCount' => $pendingMigrationsCount,
         ]);
     }
 }

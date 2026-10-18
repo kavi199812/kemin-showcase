@@ -205,32 +205,89 @@
         </form>
     </div>
 
-    <!-- 4. System Backup -->
-    <div class="bg-ink-900 border border-ink-800 rounded-sm p-6 sm:p-8 space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-ink-800">
+    <!-- 4. Database & Deployment Maintenance (hPanel / Git Sync) -->
+    <div class="bg-ink-900 border border-ink-800 rounded-sm p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-ink-800">
             <div>
-                <h3 class="font-display text-lg uppercase tracking-wider text-white">
-                    Database Backup (Spatie Backup)
-                </h3>
-                <p class="text-xs text-ink-400 mt-0.5">
-                    Generate an encrypted snapshot of product specs, client mappings, and settings.
+                <div class="flex items-center gap-2">
+                    <h3 class="font-display text-lg uppercase tracking-wider text-white">
+                        Database Schema &amp; System Maintenance
+                    </h3>
+                    @if($pendingMigrationsCount > 0)
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gold-500 text-ink-950 animate-bounce">
+                            {{ $pendingMigrationsCount }} Update(s) Pending
+                        </span>
+                    @else
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-success/20 text-success border border-success/30">
+                            Schema Synced
+                        </span>
+                    @endif
+                </div>
+                <p class="text-xs text-ink-400 mt-1">
+                    Execute pending schema migrations from GitHub to create new tables or columns in hPanel without SSH.
                 </p>
             </div>
-            <button
-                type="button"
-                wire:click="runDatabaseBackup"
-                wire:loading.attr="disabled"
-                class="px-4 py-2 bg-ink-800 hover:bg-ink-700 text-gold-400 border border-gold-500/40 rounded-sm text-xs uppercase tracking-wider font-semibold cursor-pointer transition-all flex items-center gap-2"
-            >
-                <span wire:loading.remove wire:target="runDatabaseBackup">Trigger DB Backup</span>
-                <span wire:loading wire:target="runDatabaseBackup" class="flex items-center gap-2">
-                    <svg class="animate-spin h-3.5 w-3.5 text-gold-500" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+                <button
+                    type="button"
+                    wire:click="clearCache"
+                    wire:loading.attr="disabled"
+                    class="px-3.5 py-2 bg-ink-800 hover:bg-ink-700 text-ink-300 hover:text-white border border-ink-700 rounded-sm text-xs uppercase tracking-wider font-semibold cursor-pointer transition-all flex items-center gap-1.5"
+                    title="Clear configuration, views, and routes cache"
+                >
+                    <svg class="w-3.5 h-3.5 text-ink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Backing Up...
-                </span>
-            </button>
+                    <span wire:loading.remove wire:target="clearCache">Clear Cache</span>
+                    <span wire:loading wire:target="clearCache">Clearing...</span>
+                </button>
+
+                <button
+                    type="button"
+                    wire:click="runDatabaseBackup"
+                    wire:loading.attr="disabled"
+                    class="px-3.5 py-2 bg-ink-800 hover:bg-ink-700 text-gold-400 border border-gold-500/40 rounded-sm text-xs uppercase tracking-wider font-semibold cursor-pointer transition-all flex items-center gap-1.5"
+                >
+                    <svg class="w-3.5 h-3.5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    </svg>
+                    <span wire:loading.remove wire:target="runDatabaseBackup">Backup DB</span>
+                    <span wire:loading wire:target="runDatabaseBackup">Backing Up...</span>
+                </button>
+
+                <button
+                    type="button"
+                    wire:click="runMigrations"
+                    wire:confirm="Run pending database migrations to apply new tables and columns?"
+                    wire:loading.attr="disabled"
+                    class="px-4 py-2 {{ $pendingMigrationsCount > 0 ? 'bg-gold-500 hover:bg-gold-400 text-ink-950 font-bold shadow-lg shadow-gold-500/20' : 'bg-gold-500/10 hover:bg-gold-500/20 text-gold-400 border border-gold-500/40' }} rounded-sm text-xs uppercase tracking-wider font-semibold cursor-pointer transition-all flex items-center gap-2"
+                >
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span wire:loading.remove wire:target="runMigrations">
+                        {{ $pendingMigrationsCount > 0 ? 'Update Database Now' : 'Run Migrations' }}
+                    </span>
+                    <span wire:loading wire:target="runMigrations" class="flex items-center gap-1.5">
+                        <svg class="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        Migrating...
+                    </span>
+                </button>
+            </div>
         </div>
+
+        @if($migrationOutput)
+            <div class="pt-2">
+                <div class="flex items-center justify-between text-[11px] text-ink-400 mb-1">
+                    <span class="font-mono uppercase tracking-wider">Migration Console Output</span>
+                    <button type="button" wire:click="$set('migrationOutput', '')" class="text-ink-500 hover:text-ink-300">Dismiss</button>
+                </div>
+                <pre class="bg-ink-950 border border-ink-800 rounded p-3 text-xs font-mono text-gold-400/90 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{{ $migrationOutput }}</pre>
+            </div>
+        @endif
     </div>
 </div>
