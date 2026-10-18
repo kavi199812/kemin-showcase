@@ -47,7 +47,7 @@
             <!-- Brand Logo -->
             <div class="flex items-center gap-6">
                 <a href="{{ route('showcase.home') }}" wire:navigate class="flex items-center gap-3 group focus:outline-none focus:ring-1 focus:ring-gold-500">
-                    <img src="{{ asset('images/kemin-logo.webp') }}" alt="Kemin Exports" class="h-9 w-auto object-contain" />
+                    <img src="{{ asset('images/kemin-logo.webp') }}" alt="Kemin Exports" class="h-12 sm:h-14 w-auto object-contain" />
                 </a>
                 <span class="hidden md:inline-block h-5 w-px bg-ink-700"></span>
                 <span class="hidden md:inline-block text-[10px] font-sans font-semibold uppercase tracking-[0.25em] text-ink-500">
