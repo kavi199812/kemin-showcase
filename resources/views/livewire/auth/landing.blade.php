@@ -3,6 +3,7 @@
     x-data="{
         pinLength: @js($pinLength),
         digits: Array(@js($pinLength)).fill(''),
+        showKeypad: false,
         shaking: false,
         submitting: false,
         init() {
@@ -210,8 +211,32 @@
                     </template>
                 </div>
 
-                <!-- On-Screen Virtual Keypad (Compact & Ergonomic) -->
-                <div class="max-w-[220px] sm:max-w-[240px] mx-auto grid grid-cols-3 gap-1 pt-0.5">
+                <!-- Toggle On-Screen Keypad Button -->
+                <div class="mt-2 text-center">
+                    <button
+                        type="button"
+                        @click="showKeypad = !showKeypad"
+                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm text-[10px] font-sans uppercase tracking-wider text-ink-400 hover:text-gold-400 hover:bg-ink-800/80 border border-ink-800 hover:border-ink-700/80 transition-all cursor-pointer focus:outline-none"
+                    >
+                        <svg class="w-3.5 h-3.5 text-gold-500/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                        </svg>
+                        <span x-text="showKeypad ? 'Hide Keypad' : 'Show Keypad'"></span>
+                    </button>
+                </div>
+
+                <!-- On-Screen Virtual Keypad (Collapsible) -->
+                <div
+                    x-show="showKeypad"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 -translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-2"
+                    class="max-w-[220px] sm:max-w-[240px] mx-auto grid grid-cols-3 gap-1 pt-2"
+                    style="display: none;"
+                >
                     <template x-for="n in [1, 2, 3, 4, 5, 6, 7, 8, 9]" :key="n">
                         <button
                             type="button"
