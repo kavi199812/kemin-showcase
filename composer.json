@@ -76,7 +76,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "ext-pcntl": "8.4"
+            "php": "8.2.0"
         },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
