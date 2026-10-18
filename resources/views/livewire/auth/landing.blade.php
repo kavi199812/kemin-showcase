@@ -276,7 +276,7 @@
 
     <!-- Bottom Footer Strip -->
     <footer class="relative z-10 w-full flex items-center justify-end shrink-0 pb-1 pr-2 sm:pr-6">
-        <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 font-sans">
+        <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] font-sans">
             &copy; {{ date('Y') }} Kemin Exports &middot; Internal Sales Showcase &middot; Confidential
         </p>
     </footer>
