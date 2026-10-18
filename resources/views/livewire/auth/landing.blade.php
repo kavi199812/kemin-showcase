@@ -115,13 +115,13 @@
             loop
             muted
             playsinline
-            class="w-full h-full object-cover opacity-85"
+            class="w-full h-full object-cover opacity-100"
         >
             <source src="{{ asset('videos/hero-background.mp4') }}" type="video/mp4">
         </video>
-        <!-- Light contrast overlay so video is bright and clearly visible -->
-        <div class="absolute inset-0 bg-ink-950/35"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-ink-950/60"></div>
+        <!-- Very light contrast overlay so video is vivid, bright and clearly visible -->
+        <div class="absolute inset-0 bg-ink-950/10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-950/40 via-transparent to-ink-950/25"></div>
 
         <!-- Ambient Luxury Glow Orbs -->
         <div class="absolute -top-32 -left-32 w-80 h-80 bg-gold-600/10 rounded-full blur-3xl"></div>
@@ -144,18 +144,8 @@
         </a>
     </header>
 
-    <!-- Center Hero & PIN Section (Fitted in viewport with zero scroll) -->
+    <!-- Center PIN Section (Fitted in viewport with zero scroll) -->
     <main class="relative z-10 max-w-sm sm:max-w-md mx-auto w-full my-auto text-center shrink-0 py-0.5">
-        <!-- Brand Title -->
-        <div class="mb-2 sm:mb-3">
-            <h1 class="font-display font-bold uppercase tracking-tight text-white text-2xl sm:text-4xl md:text-5xl leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
-                {{ $heroLine1 }}
-            </h1>
-            <p class="font-display font-light text-ink-200 text-sm sm:text-xl mt-0.5 tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                {{ $heroLine2 }}
-            </p>
-        </div>
-
         <!-- Lockout Notice or PIN Input Container -->
         @if($isLockedOut)
             <div class="bg-ink-900/95 backdrop-blur-md border border-danger/40 rounded-sm p-4 shadow-2xl relative">
@@ -274,8 +264,18 @@
         @endif
     </main>
 
+    <!-- Bottom-Left Brand Lockup (Print. Craft. Deliver. / KEMIN EXPORTS) -->
+    <div class="absolute bottom-3 left-4 sm:bottom-6 sm:left-8 md:bottom-8 md:left-10 z-10 pointer-events-none select-none text-left">
+        <p class="font-sans font-light text-white text-xs sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+            Print. Craft. Deliver.
+        </p>
+        <h2 class="font-display font-bold uppercase tracking-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-none mt-0.5 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+            <span class="text-white">KEMIN</span> <span class="text-kraft">EXPORTS</span>
+        </h2>
+    </div>
+
     <!-- Bottom Footer Strip -->
-    <footer class="relative z-10 w-full text-center shrink-0 pb-1">
+    <footer class="relative z-10 w-full flex items-center justify-end shrink-0 pb-1 pr-2 sm:pr-6">
         <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-ink-500 font-sans">
             &copy; {{ date('Y') }} Kemin Exports &middot; Internal Sales Showcase &middot; Confidential
         </p>
