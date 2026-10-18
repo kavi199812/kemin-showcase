@@ -27,13 +27,28 @@ use Illuminate\Support\Facades\Route;
 // Guest landing (Video + Brand Logo + Argon2id Segmented PIN)
 Route::get('/', Landing::class)->name('landing');
 
-// End Presenter Session
+// End Presenter Session & Logout
 Route::post('/lock', function (Request $request) {
+    if (Auth::check()) {
+        Auth::guard('web')->logout();
+    }
     $request->session()->forget(['presenter.unlocked_at', 'presenter.version']);
-    $request->session()->regenerate();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-    return redirect()->route('landing')->with('status', 'Showcase session locked.');
+    return redirect()->route('landing')->with('status', 'Logged out and showcase session locked.');
 })->name('lock');
+
+Route::post('/logout', function (Request $request) {
+    if (Auth::check()) {
+        Auth::guard('web')->logout();
+    }
+    $request->session()->forget(['presenter.unlocked_at', 'presenter.version']);
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('landing')->with('status', 'Logged out and showcase session locked.');
+})->name('logout');
 
 // Named route alias for admin login
 Route::get('/admin/login-redirect', function () {

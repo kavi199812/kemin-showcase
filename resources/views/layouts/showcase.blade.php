@@ -80,7 +80,7 @@
                 </a>
             </nav>
 
-            <!-- Actions: Lock & Optional Admin -->
+            <!-- Actions: Logout & Optional Admin -->
             <div class="flex items-center gap-3">
                 @if(auth()->check() && auth()->user()->is_admin)
                     <a
@@ -95,13 +95,13 @@
                     @csrf
                     <button
                         type="submit"
-                        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-sm bg-ink-800 hover:bg-ink-700 border border-ink-700 hover:border-gold-500/50 text-xs font-sans uppercase tracking-wider text-ink-300 hover:text-white transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold-500"
-                        title="End Presenter Session and Lock Showcase"
+                        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-ink-800 hover:bg-danger/15 border border-ink-700 hover:border-danger/40 text-xs font-sans uppercase tracking-wider text-ink-300 hover:text-white transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-danger/50"
+                        title="Logout and Lock Showcase"
                     >
                         <svg class="w-3.5 h-3.5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        <span>Lock</span>
+                        <span>Logout</span>
                     </button>
                 </form>
             </div>
@@ -112,6 +112,15 @@
             <a href="{{ route('showcase.home') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.home') ? 'text-gold-400' : 'text-ink-300' }}">Search</a>
             <a href="{{ route('showcase.products.index') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.products.*') ? 'text-gold-400' : 'text-ink-300' }}">Products</a>
             <a href="{{ route('showcase.companies.index') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.companies.*') ? 'text-gold-400' : 'text-ink-300' }}">Companies</a>
+            <form action="{{ route('lock') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-danger flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Logout
+                </button>
+            </form>
         </div>
     </header>
 
