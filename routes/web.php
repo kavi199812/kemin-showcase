@@ -110,3 +110,21 @@ Route::get('/storage/{path}', function (string $path) {
 
     return response()->file($filePath);
 })->where('path', '.*')->name('storage.fallback');
+
+// Hostinger / Shared hosting helper to create symlink and clear cache via browser
+Route::get('/link-storage', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+
+        return response('Storage link created and cache cleared successfully!', 200)
+            ->header('Content-Type', 'text/plain');
+    } catch (\Throwable $e) {
+        return response('Error: '.$e->getMessage(), 500)
+            ->header('Content-Type', 'text/plain');
+    }
+});
+
