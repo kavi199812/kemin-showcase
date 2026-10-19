@@ -81,12 +81,14 @@ class Company extends Model implements HasMedia
             ->height(300)
             ->crop(400, 300)
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->nonQueued();
 
         $this->addMediaConversion('card')
             ->width(800)
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->nonQueued();
     }
 
     /**
@@ -161,7 +163,9 @@ class Company extends Model implements HasMedia
     {
         $logo = $this->getFirstMedia('logo');
         if ($logo) {
-            return $logo->getUrl($conversion);
+            return $logo->hasGeneratedConversion($conversion)
+                ? $logo->getUrl($conversion)
+                : $logo->getUrl();
         }
 
         return asset('images/company-placeholder.webp');

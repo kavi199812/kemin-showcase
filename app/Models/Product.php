@@ -80,17 +80,20 @@ class Product extends Model implements HasMedia
             ->height(300)
             ->crop(400, 300)
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->nonQueued();
 
         $this->addMediaConversion('card')
             ->width(800)
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->nonQueued();
 
         $this->addMediaConversion('full')
             ->width(1600)
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->nonQueued();
     }
 
     /**
@@ -173,7 +176,9 @@ class Product extends Model implements HasMedia
     {
         $first = $this->getFirstMedia('gallery');
         if ($first) {
-            return $first->getUrl($conversion);
+            return $first->hasGeneratedConversion($conversion)
+                ? $first->getUrl($conversion)
+                : $first->getUrl();
         }
 
         return asset('images/product-placeholder.webp');

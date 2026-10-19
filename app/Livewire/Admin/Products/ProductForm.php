@@ -65,7 +65,7 @@ class ProductForm extends Component
     {
         $this->existingMedia = $product->getMedia('gallery')->map(fn (Media $m) => [
             'id' => $m->id,
-            'url' => $m->getUrl('card'),
+            'url' => $m->hasGeneratedConversion('card') ? $m->getUrl('card') : $m->getUrl(),
             'name' => $m->file_name,
         ])->all();
     }

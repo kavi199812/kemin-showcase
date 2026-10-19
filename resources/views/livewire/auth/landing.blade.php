@@ -264,20 +264,23 @@
         @endif
     </main>
 
-    <!-- Bottom-Left Brand Lockup (Print. Craft. Deliver. / KEMIN EXPORTS) -->
-    <div class="absolute bottom-3 left-4 sm:bottom-6 sm:left-8 md:bottom-8 md:left-10 z-10 pointer-events-none select-none text-left">
-        <p class="font-sans font-light text-white text-xs sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            Print. Craft. Deliver.
-        </p>
-        <h2 class="font-display font-bold uppercase tracking-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-none mt-0.5 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
-            <span class="text-white">KEMIN</span> <span class="text-kraft">EXPORTS</span>
-        </h2>
-    </div>
+    <!-- Bottom Section: Brand Lockup & Confidential Footer (Responsive Flex Flow) -->
+    <footer class="relative z-10 w-full flex flex-col sm:flex-row items-start sm:items-end justify-between gap-1.5 sm:gap-4 px-2 sm:px-4 md:px-6 pb-2 pointer-events-none select-none shrink-0">
+        <!-- Brand Lockup (Print. Craft. Deliver. / KEMIN EXPORTS) -->
+        <div class="text-left">
+            <p class="font-sans font-light text-white text-[11px] sm:text-sm md:text-lg lg:text-xl tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+                Print. Craft. Deliver.
+            </p>
+            <h2 class="font-display font-bold uppercase tracking-tight text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-none mt-0.5 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+                <span class="text-white">KEMIN</span> <span class="text-kraft">EXPORTS</span>
+            </h2>
+        </div>
 
-    <!-- Bottom Footer Strip -->
-    <footer class="relative z-10 w-full flex items-center justify-end shrink-0 pb-1 pr-2 sm:pr-6">
-        <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] font-sans">
-            &copy; {{ date('Y') }} Kemin Exports &middot; Internal Sales Showcase &middot; Confidential
-        </p>
+        <!-- Footer Copyright (Cleanly stacked on mobile, right-aligned on desktop) -->
+        <div class="w-full sm:w-auto text-left sm:text-right">
+            <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-white/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] font-sans">
+                &copy; {{ date('Y') }} Kemin Exports &middot; <span class="hidden sm:inline">Internal Sales Showcase &middot; </span>Confidential
+            </p>
+        </div>
     </footer>
 </div>

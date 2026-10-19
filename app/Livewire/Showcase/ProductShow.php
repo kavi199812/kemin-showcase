@@ -29,7 +29,10 @@ class ProductShow extends Component
 
     public function triggerLightbox(): void
     {
-        $images = $this->product->getMedia('gallery')->map(fn ($m) => $m->getUrl('full'))->values()->all();
+        $images = $this->product->getMedia('gallery')->map(
+            fn ($m) => $m->hasGeneratedConversion('full') ? $m->getUrl('full') : $m->getUrl()
+        )->values()->all();
+
         if (empty($images)) {
             $images = [asset('images/product-placeholder.webp')];
         }
@@ -41,9 +44,9 @@ class ProductShow extends Component
     {
         $galleryMedia = $this->product->getMedia('gallery');
         $galleryUrls = $galleryMedia->map(fn ($m) => [
-            'thumb' => $m->getUrl('thumb'),
-            'card' => $m->getUrl('card'),
-            'full' => $m->getUrl('full'),
+            'thumb' => $m->hasGeneratedConversion('thumb') ? $m->getUrl('thumb') : $m->getUrl(),
+            'card' => $m->hasGeneratedConversion('card') ? $m->getUrl('card') : $m->getUrl(),
+            'full' => $m->hasGeneratedConversion('full') ? $m->getUrl('full') : $m->getUrl(),
         ])->all();
 
         if (empty($galleryUrls)) {

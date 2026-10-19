@@ -96,3 +96,17 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
         return redirect()->route('login');
     })->name('logout');
 });
+
+// Fallback route to serve uploaded public storage files when symlink is not present on production/shared hosting
+Route::get('/storage/{path}', function (string $path) {
+    if (str_contains($path, '..')) {
+        abort(404);
+    }
+
+    $filePath = storage_path('app/public/'.$path);
+    if (! file_exists($filePath)) {
+        abort(404);
+    }
+
+    return response()->file($filePath);
+})->where('path', '.*')->name('storage.fallback');
