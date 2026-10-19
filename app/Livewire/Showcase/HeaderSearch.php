@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Showcase;
 
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
@@ -30,25 +31,32 @@ class HeaderSearch extends Component
     {
         $liveProducts = collect();
         $liveCompanies = collect();
+        $categories = collect();
 
         $term = trim($this->q);
         if (mb_strlen($term) >= 2) {
             $liveProducts = Product::active()
                 ->search($term)
-                ->with(['category', 'media'])
-                ->take(5)
+                ->with(['category', 'media', 'companies'])
+                ->take(8)
                 ->get();
 
             $liveCompanies = Company::active()
                 ->search($term)
                 ->with(['media'])
-                ->take(3)
+                ->take(6)
+                ->get();
+        } else {
+            $categories = Category::withCount('activeProducts')
+                ->orderBy('sort_order')
+                ->take(8)
                 ->get();
         }
 
         return view('livewire.showcase.header-search', [
             'liveProducts' => $liveProducts,
             'liveCompanies' => $liveCompanies,
+            'categories' => $categories,
         ]);
     }
 }
