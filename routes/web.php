@@ -111,20 +111,46 @@ Route::get('/storage/{path}', function (string $path) {
     return response()->file($filePath);
 })->where('path', '.*')->name('storage.fallback');
 
-// Hostinger / Shared hosting helper to create symlink and clear cache via browser
+// Hostinger / Shared hosting helper to create symlink, clear cache, and report diagnostics
 Route::get('/link-storage', function () {
+    $messages = [];
+
+    // 1. Try creating symlink if permitted by host
     try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        if (! file_exists(public_path('storage'))) {
+            if (function_exists('symlink')) {
+                @symlink(storage_path('app/public'), public_path('storage'));
+                $messages[] = 'Symlink: Created via native symlink().';
+            } else {
+                \Illuminate\Support\Facades\Artisan::call('storage:link');
+                $messages[] = 'Symlink: Created via Artisan storage:link.';
+            }
+        } else {
+            $messages[] = 'Symlink: public/storage already exists.';
+        }
+    } catch (\Throwable $e) {
+        $messages[] = 'Symlink: Hostinger disabled exec()/symlink(). (Laravel Fallback Route will serve images directly!)';
+    }
+
+    // 2. Clear all Laravel caches
+    try {
         \Illuminate\Support\Facades\Artisan::call('config:clear');
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
         \Illuminate\Support\Facades\Artisan::call('route:clear');
         \Illuminate\Support\Facades\Artisan::call('view:clear');
-
-        return response('Storage link created and cache cleared successfully!', 200)
-            ->header('Content-Type', 'text/plain');
+        $messages[] = 'Cache: Config, cache, routes, and views cleared successfully.';
     } catch (\Throwable $e) {
-        return response('Error: '.$e->getMessage(), 500)
-            ->header('Content-Type', 'text/plain');
+        $messages[] = 'Cache notice: '.$e->getMessage();
     }
+
+    // 3. Storage Diagnostics
+    $storagePublicPath = storage_path('app/public');
+    $messages[] = 'Storage App Public Path: '.$storagePublicPath.' (Exists: '.(is_dir($storagePublicPath) ? 'Yes' : 'No').')';
+    $files = is_dir($storagePublicPath) ? array_diff(scandir($storagePublicPath), ['.', '..']) : [];
+    $messages[] = 'Items in storage/app/public: '.count($files).' ['.implode(', ', array_slice($files, 0, 10)).']';
+    $messages[] = 'Public Disk URL: '.config('filesystems.disks.public.url');
+
+    return response(implode("\n", $messages), 200)
+        ->header('Content-Type', 'text/plain');
 });
 
