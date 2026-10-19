@@ -134,8 +134,10 @@ Route::get('/media-stream/{path}', function (string $path) {
         abort(404, "Not on disk: ".$filePath);
     }
 
-    return response()->file($filePath);
-})->where('path', '.*');
+    return response()->file($filePath, [
+        'Cache-Control' => 'public, max-age=31536000, immutable',
+    ]);
+})->where('path', '.*')->name('media.stream');
 
 // Hostinger / Shared hosting helper to create symlink, clear cache, and report diagnostics
 Route::get('/link-storage', function () {
