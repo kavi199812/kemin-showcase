@@ -57,10 +57,17 @@ class SearchService
      */
     public function applyProductSearch(Builder $query, string $term): Builder
     {
-        $tokens = $this->tokenize($term);
+        $rawTrimmed = trim($term);
+        if ($rawTrimmed === '') {
+            return $query;
+        }
+
+        $tokens = $this->tokenize($rawTrimmed);
         if (empty($tokens)) {
             return $query;
         }
+
+        $escapedRaw = $this->escapeLike($rawTrimmed);
 
         // Determine if all tokens are 3+ characters suitable for MySQL FULLTEXT boolean mode
         $canUseFulltext = true;
@@ -76,15 +83,20 @@ class SearchService
         if ($canUseFulltext) {
             $booleanString = implode(' ', $booleanTokens);
 
-            return $query->where(function (Builder $sub) use ($booleanString, $tokens) {
-                $sub->whereRaw('MATCH(name, short_description) AGAINST(? IN BOOLEAN MODE)', [$booleanString])
+            return $query->where(function (Builder $sub) use ($booleanString, $tokens, $escapedRaw) {
+                $sub->where('job_number', 'LIKE', "%{$escapedRaw}%")
+                    ->orWhereRaw('MATCH(name, short_description) AGAINST(? IN BOOLEAN MODE)', [$booleanString])
                     ->orWhere(function (Builder $likeSub) use ($tokens) {
                         // Fallback within grouped conditions for partial substring matches
                         foreach ($tokens as $token) {
                             $escaped = $this->escapeLike($token);
                             $likeSub->where(function (Builder $colSub) use ($escaped) {
                                 $colSub->where('name', 'LIKE', "%{$escaped}%")
-                                    ->orWhere('short_description', 'LIKE', "%{$escaped}%");
+                                    ->orWhere('short_description', 'LIKE', "%{$escaped}%")
+                                    ->orWhere('job_number', 'LIKE', "%{$escaped}%")
+                                    ->orWhereHas('companies', function (Builder $cq) use ($escaped) {
+                                        $cq->where('name', 'LIKE', "%{$escaped}%");
+                                    });
                             });
                         }
                     });
@@ -92,14 +104,21 @@ class SearchService
         }
 
         // Fallback to strict parameterized LIKE query
-        return $query->where(function (Builder $sub) use ($tokens) {
-            foreach ($tokens as $token) {
-                $escaped = $this->escapeLike($token);
-                $sub->where(function (Builder $colSub) use ($escaped) {
-                    $colSub->where('name', 'LIKE', "%{$escaped}%")
-                        ->orWhere('short_description', 'LIKE', "%{$escaped}%");
+        return $query->where(function (Builder $sub) use ($tokens, $escapedRaw) {
+            $sub->where('job_number', 'LIKE', "%{$escapedRaw}%")
+                ->orWhere(function (Builder $tokensSub) use ($tokens) {
+                    foreach ($tokens as $token) {
+                        $escaped = $this->escapeLike($token);
+                        $tokensSub->where(function (Builder $colSub) use ($escaped) {
+                            $colSub->where('name', 'LIKE', "%{$escaped}%")
+                                ->orWhere('short_description', 'LIKE', "%{$escaped}%")
+                                ->orWhere('job_number', 'LIKE', "%{$escaped}%")
+                                ->orWhereHas('companies', function (Builder $cq) use ($escaped) {
+                                    $cq->where('name', 'LIKE', "%{$escaped}%");
+                                });
+                        });
+                    }
                 });
-            }
         });
     }
 

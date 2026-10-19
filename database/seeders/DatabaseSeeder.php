@@ -149,6 +149,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Rigid Luxury Boxes',
                 'name' => 'Matte Black Magnetic Closure Gift Box',
+                'job_number' => 'KE-JOB-2024-001',
                 'short_description' => '1500gsm rigid board with deep matte lamination, concealed magnetic snap, and custom velvet eva foam insert.',
                 'description' => '<p>Crafted for ultra-premium cosmetics, luxury watches, and executive gifting. Features <strong>1500gsm heavy greyboard</strong> wrapped in 157gsm coated art paper with anti-scratch matte soft-touch lamination.</p><ul><li>Concealed neodymium magnetic closure</li><li>Gold hot-foil stamping on top lid</li><li>Velvet-flocked laser cut EVA insert</li><li>FSC-certified board</li></ul>',
                 'specs' => [
@@ -167,6 +168,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Premium Tea & Food Cartons',
                 'name' => 'Gold Foil Embossed Ceylon Tea Caddy',
+                'job_number' => 'KE-JOB-2024-002',
                 'short_description' => '350gsm virgin bleached food-grade board with intricate micro-embossed gold foil stamping and high-gloss spot UV.',
                 'description' => '<p>Designed specifically for premium single-origin tea exporters meeting strict international food safety standards (FDA / EU compliant).</p><ul><li>350gsm Virgin SBS bleached board</li><li>Micro-embossing with dual-tone gold foil</li><li>High-barrier inner aqueous coating for freshness retention</li><li>High-speed automated carton folding compatibility</li></ul>',
                 'specs' => [
@@ -186,6 +188,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Corrugated Cartons',
                 'name' => 'Heavy-Duty Export Master Shipper (E/B Flute)',
+                'job_number' => 'KE-JOB-2024-003',
                 'short_description' => 'Double-wall 5-ply corrugated carton engineered for maritime transport with 32 ECT crush resistance.',
                 'description' => '<p>Our high-performance shipping cartons are engineered to withstand humidity and severe transit shock during international sea freight.</p><ul><li>Double wall 5-ply kraft virgin liner</li><li>Edge Crush Test (ECT): 44 lbs/in minimum</li><li>Water-repellent external treatment</li><li>Precision slotting and clean flap closure</li></ul>',
                 'specs' => [
@@ -204,6 +207,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Garment & Apparel Hangtags',
                 'name' => 'FSC-Certified Recycled Cotton Swing Tag',
+                'job_number' => 'KE-JOB-2024-004',
                 'short_description' => '700gsm cotton-pulp artisanal card with debossed brand monogram, eyelet reinforcement, and raw hemp cord.',
                 'description' => '<p>Sustainable luxury hangtags for ethical fashion brands. Made from 100% pre-consumer recycled cotton waste with no chlorine bleaching.</p><ul><li>700gsm tactile heavyweight cotton board</li><li>Blind deep debossing on face and back</li><li>Organic raw unbleached hemp string</li><li>Recycled brass metal eyelet</li></ul>',
                 'specs' => [
@@ -222,6 +226,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Eco-Friendly Kraft Packaging',
                 'name' => 'Kraft Resealable Stand-Up Pouch with Valve',
+                'job_number' => 'KE-JOB-2024-005',
                 'short_description' => 'Multi-layer high-barrier natural kraft paper with compostable PLA lining and one-way degassing valve.',
                 'description' => '<p>Optimal for roasted coffee beans, dried fruits, and organic teas requiring airtight preservation without environmental toll.</p><ul><li>High-barrier home-compostable inner lining</li><li>Zip-lock resealable channel with easy-tear notch</li><li>One-way degassing aroma valve</li><li>Natural rustic kraft exterior with soy-ink print</li></ul>',
                 'specs' => [
@@ -239,6 +244,7 @@ class DatabaseSeeder extends Seeder
             [
                 'category' => 'Rigid Luxury Boxes',
                 'name' => 'Custom Book-Style Presentation Box',
+                'job_number' => 'KE-JOB-2024-006',
                 'short_description' => 'Hinged book-style box with concealed spine ribbons and metallic copper foil detailing.',
                 'description' => '<p>Unfolds like a commemorative volume. Popular for VIP corporate introductions, anniversary releases, and jewellery presentations.</p>',
                 'specs' => [
@@ -256,11 +262,12 @@ class DatabaseSeeder extends Seeder
 
         foreach ($productsData as $prodData) {
             $cat = $categories[$prodData['category']] ?? null;
-            $product = Product::firstOrCreate(
+            $product = Product::updateOrCreate(
                 ['slug' => Str::slug($prodData['name'])],
                 [
                     'category_id' => $cat?->id,
                     'name' => $prodData['name'],
+                    'job_number' => $prodData['job_number'] ?? null,
                     'short_description' => $prodData['short_description'],
                     'description' => $prodData['description'],
                     'specs' => $prodData['specs'],

@@ -98,7 +98,7 @@
                         type="text"
                         wire:model.live.debounce.200ms="q"
                         wire:keydown.enter="search"
-                        placeholder="Search products, materials, specs, or brands..."
+                        placeholder="Search by product name, job number, partner, or specs..."
                         style="width: 100%; height: 3.5rem; background: #17171c; border: 1.5px solid #2e2e38; border-radius: 4px; padding-left: 3.5rem !important; padding-right: 5rem !important; font-size: 1.05rem; color: #ffffff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;"
                         onfocus="this.style.borderColor='#c9a45c'; this.style.boxShadow='0 0 0 3px rgba(201, 164, 92, 0.25)';"
                         onblur="this.style.borderColor='#2e2e38'; this.style.boxShadow='none';"
@@ -172,11 +172,18 @@
                                                 <h4 class="group-hover:text-gold-300 transition-colors" style="font-size: 0.95rem; font-weight: 600; color: #ffffff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                     {{ $prod->name }}
                                                 </h4>
-                                                @if($prod->category)
-                                                    <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #c9a45c; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                        {{ $prod->category->name }}
-                                                    </div>
-                                                @endif
+                                                <div class="flex items-center gap-2 flex-wrap" style="margin-top: 3px;">
+                                                    @if($prod->job_number)
+                                                        <span style="font-size: 0.68rem; font-family: monospace; font-weight: 600; background: #23232b; color: #c9a45c; padding: 1px 5px; border-radius: 2px; border: 1px solid #383842;">
+                                                            #{{ $prod->job_number }}
+                                                        </span>
+                                                    @endif
+                                                    @if($prod->category)
+                                                        <span style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #c9a45c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                            {{ $prod->category->name }}
+                                                        </span>
+                                                    @endif
+                                                </div>
                                                 @if($prod->companies->isNotEmpty())
                                                     <div style="font-size: 0.75rem; color: #8d8d99; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                         Partner: {{ $prod->companies->pluck('name')->join(', ') }}
@@ -276,7 +283,7 @@
                         </div>
 
                         <div class="pt-3 flex items-center justify-between text-[11px] text-ink-500">
-                            <span>Type 2 or more characters to search products, materials, specs, or brand partners</span>
+                            <span>Type 2 or more characters to search products, job numbers, specs, or brand partners</span>
                             <span class="hidden sm:inline">Press ESC to close</span>
                         </div>
                     </div>

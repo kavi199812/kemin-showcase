@@ -24,7 +24,7 @@
                 <input
                     type="text"
                     wire:model.live.debounce.250ms="q"
-                    placeholder="Search by name, description..."
+                    placeholder="Search by name, job number, description..."
                     class="w-full bg-ink-800 border border-ink-700 rounded-sm px-4 py-2 pl-9 text-xs text-white placeholder-ink-500 focus:outline-none focus:border-gold-500"
                 />
                 <svg class="w-4 h-4 text-ink-500 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,9 +71,16 @@
                                 </div>
                             </td>
                             <td class="py-3 px-4">
-                                <a href="{{ route('admin.products.edit', $product->id) }}" class="font-semibold text-white hover:text-gold-400 text-sm transition-colors block">
-                                    {{ $product->name }}
-                                </a>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="font-semibold text-white hover:text-gold-400 text-sm transition-colors">
+                                        {{ $product->name }}
+                                    </a>
+                                    @if($product->job_number)
+                                        <span class="px-1.5 py-0.5 rounded-xs bg-ink-800 text-[10px] font-mono text-gold-400 border border-ink-700 font-semibold" title="Job Number">
+                                            #{{ $product->job_number }}
+                                        </span>
+                                    @endif
+                                </div>
                                 <span class="text-[10px] text-gold-500 uppercase tracking-wider mt-0.5 block">
                                     {{ $product->category?->name ?? 'Uncategorized' }}
                                 </span>

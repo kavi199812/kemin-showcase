@@ -25,11 +25,18 @@ $companiesCount = $product->companies_count ?? $product->companies->count();
     <!-- Card Content -->
     <div class="p-5 flex flex-col flex-1 text-center justify-between">
         <div>
-            @if($categoryName)
-                <span class="block text-[10px] font-sans font-semibold tracking-widest uppercase text-ink-500 mb-1.5">
-                    {{ $categoryName }}
-                </span>
-            @endif
+            <div class="flex items-center justify-center gap-1.5 flex-wrap mb-1.5">
+                @if($categoryName)
+                    <span class="text-[10px] font-sans font-semibold tracking-widest uppercase text-ink-500">
+                        {{ $categoryName }}
+                    </span>
+                @endif
+                @if($product->job_number)
+                    <span class="inline-block text-[9px] font-mono font-semibold tracking-wider text-ink-500 bg-neutral-100 px-1.5 py-0.5 rounded-xs border border-neutral-200" title="Job Number">
+                        #{{ $product->job_number }}
+                    </span>
+                @endif
+            </div>
 
             <h3 class="font-sans font-semibold text-[15px] text-ink-950 group-hover:text-gold-600 transition-colors leading-snug line-clamp-2">
                 <a href="{{ route('showcase.products.show', $product->slug) }}" wire:navigate>

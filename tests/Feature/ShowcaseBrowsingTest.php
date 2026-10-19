@@ -98,3 +98,54 @@ test('company detail page displays products supplied to that brand', function ()
     $response->assertSee('Spa Ceylon Luxury');
     $response->assertSee('Ayurvedic Gift Sleeve');
 });
+
+test('products can be searched by job number', function () {
+    $category = Category::create(['name' => 'Custom Boxes', 'slug' => 'custom-boxes', 'sort_order' => 1]);
+
+    $prod1 = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Signature Matte Rigid Box',
+        'slug' => 'signature-matte-rigid-box',
+        'job_number' => 'KE-JOB-9099',
+        'is_active' => true,
+    ]);
+
+    $prod2 = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Standard Corrugated Carton',
+        'slug' => 'standard-corrugated-carton',
+        'job_number' => 'KE-JOB-8088',
+        'is_active' => true,
+    ]);
+
+    // Search by full job number
+    $results = Product::search('KE-JOB-9099')->get();
+    expect($results->pluck('id')->all())->toContain($prod1->id);
+    expect($results->pluck('id')->all())->not->toContain($prod2->id);
+
+    // Search by partial job number
+    $resultsPartial = Product::search('9099')->get();
+    expect($resultsPartial->pluck('id')->all())->toContain($prod1->id);
+
+    // Showcase products URL query search
+    $response = $this->get('/showcase/products?q=KE-JOB-9099');
+    $response->assertOk();
+    $response->assertSee('Signature Matte Rigid Box');
+    $response->assertDontSee('Standard Corrugated Carton');
+});
+
+test('product detail page shows job number', function () {
+    $category = Category::create(['name' => 'Luxury Packaging', 'slug' => 'luxury-packaging', 'sort_order' => 1]);
+
+    $product = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Embossed Perfume Box',
+        'slug' => 'embossed-perfume-box',
+        'job_number' => 'KE-JOB-7700',
+        'is_active' => true,
+    ]);
+
+    $response = $this->get("/showcase/products/{$product->slug}");
+    $response->assertOk();
+    $response->assertSee('KE-JOB-7700');
+});

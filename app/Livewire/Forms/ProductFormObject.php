@@ -21,6 +21,8 @@ class ProductFormObject extends Form
 
     public string $slug = '';
 
+    public ?string $job_number = '';
+
     public ?string $short_description = '';
 
     public ?string $description = '';
@@ -50,6 +52,7 @@ class ProductFormObject extends Form
             'category_id' => ['nullable', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:120', Rule::unique('products', 'name')->ignore($this->id)],
             'slug' => ['required', 'string', 'max:140', Rule::unique('products', 'slug')->ignore($this->id)],
+            'job_number' => ['nullable', 'string', 'max:80'],
             'short_description' => ['nullable', 'string', 'max:200'],
             'description' => ['nullable', 'string'],
             'specs' => ['nullable', 'array'],
@@ -68,6 +71,7 @@ class ProductFormObject extends Form
         $this->category_id = $product->category_id;
         $this->name = $product->name;
         $this->slug = $product->slug;
+        $this->job_number = $product->job_number ?? '';
         $this->short_description = $product->short_description ?? '';
         $this->description = $product->description ?? '';
         $rawSpecs = $product->getAttribute('specs');
@@ -123,6 +127,7 @@ class ProductFormObject extends Form
             'category_id' => $this->category_id ?: null,
             'name' => $this->name,
             'slug' => $this->slug,
+            'job_number' => filled($this->job_number) ? trim($this->job_number) : null,
             'short_description' => $this->short_description ?: null,
             'description' => $purifiedDescription,
             'specs' => $cleanSpecs,
@@ -151,6 +156,7 @@ class ProductFormObject extends Form
             'category_id' => $this->category_id ?: null,
             'name' => $this->name,
             'slug' => $this->slug,
+            'job_number' => filled($this->job_number) ? trim($this->job_number) : null,
             'short_description' => $this->short_description ?: null,
             'description' => $purifiedDescription,
             'specs' => $cleanSpecs,

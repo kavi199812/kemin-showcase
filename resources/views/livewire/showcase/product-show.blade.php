@@ -58,9 +58,17 @@
         <!-- Right: Specifications & Details -->
         <div class="lg:col-span-5 space-y-8">
             <div>
-                @if($product->category)
-                    <x-ui.eyebrow :text="$product->category->name" class="mb-3" />
-                @endif
+                <div class="flex items-center gap-3 flex-wrap mb-3">
+                    @if($product->category)
+                        <x-ui.eyebrow :text="$product->category->name" />
+                    @endif
+                    @if($product->job_number)
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-ink-900 border border-gold-500/40 text-gold-400 font-mono text-xs font-semibold tracking-wider shadow-xs">
+                            <span class="text-ink-400 text-[10px] uppercase font-sans tracking-widest">Job No:</span>
+                            <span>#{{ $product->job_number }}</span>
+                        </span>
+                    @endif
+                </div>
 
                 <h1 class="font-display font-bold uppercase text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
                     {{ $product->name }}

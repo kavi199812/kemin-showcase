@@ -20,6 +20,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $category_id
  * @property string $name
  * @property string $slug
+ * @property string|null $job_number
  * @property string|null $short_description
  * @property string|null $description
  * @property array<array{key: string, value: string}>|null $specs
@@ -40,6 +41,7 @@ class Product extends Model implements HasMedia
         'category_id',
         'name',
         'slug',
+        'job_number',
         'short_description',
         'description',
         'specs',

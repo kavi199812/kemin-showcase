@@ -67,6 +67,22 @@
                     @error('form.category_id') <span class="text-xs text-danger mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Job Number -->
+                <div>
+                    <label for="job_number" class="block text-xs uppercase tracking-wider text-ink-300 font-semibold mb-2">
+                        Job Number / Reference Code
+                    </label>
+                    <x-ui.input
+                        id="job_number"
+                        type="text"
+                        wire:model="form.job_number"
+                        placeholder="e.g. KE-JOB-2024-001"
+                        :error="$errors->first('form.job_number')"
+                    />
+                    @error('form.job_number') <span class="text-xs text-danger mt-1 block">{{ $message }}</span> @enderror
+                    <span class="text-[11px] text-ink-500 mt-1 block">Production tracking job code or manufacturing number.</span>
+                </div>
+
                 <!-- Sort Order -->
                 <div>
                     <label for="sort_order" class="block text-xs uppercase tracking-wider text-ink-300 font-semibold mb-2">
