@@ -12,6 +12,7 @@ use App\Livewire\Auth\Landing;
 use App\Livewire\Showcase\CompanyIndex;
 use App\Livewire\Showcase\CompanyShow;
 use App\Livewire\Showcase\Home;
+use App\Livewire\Showcase\JobNumberIndex;
 use App\Livewire\Showcase\ProductIndex;
 use App\Livewire\Showcase\ProductShow;
 use Illuminate\Http\Request;
@@ -62,6 +63,8 @@ Route::middleware(['presenter'])->prefix('showcase')->name('showcase.')->group(f
     Route::get('/products/{slug}', ProductShow::class)->name('products.show');
     Route::get('/companies', CompanyIndex::class)->name('companies.index');
     Route::get('/companies/{slug}', CompanyShow::class)->name('companies.show');
+    Route::get('/job-numbers', JobNumberIndex::class)->name('job-numbers.index');
+    Route::get('/job-number', fn () => redirect()->route('showcase.job-numbers.index'));
 });
 
 // Admin Routes (Secured by EnsureIsAdmin middleware)

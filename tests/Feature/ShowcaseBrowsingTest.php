@@ -149,3 +149,38 @@ test('product detail page shows job number', function () {
     $response->assertOk();
     $response->assertSee('KE-JOB-7700');
 });
+
+test('job numbers directory page displays products and filters by query', function () {
+    $category = Category::create(['name' => 'Premium Bags', 'slug' => 'premium-bags', 'sort_order' => 1]);
+
+    $prodA = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Luxury Tote Paper Bag',
+        'slug' => 'luxury-tote-paper-bag',
+        'job_number' => 'KE-JOB-4411',
+        'is_active' => true,
+    ]);
+
+    $prodB = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Recycled Kraft Gift Bag',
+        'slug' => 'recycled-kraft-gift-bag',
+        'job_number' => 'KE-JOB-5522',
+        'is_active' => true,
+    ]);
+
+    // Test main page access & navigation link
+    $response = $this->get('/showcase/job-numbers');
+    $response->assertOk();
+    $response->assertSee('Job Numbers');
+    $response->assertSee('KE-JOB-4411');
+    $response->assertSee('KE-JOB-5522');
+    $response->assertSee('Luxury Tote Paper Bag');
+
+    // Test search filter
+    $filtered = $this->get('/showcase/job-numbers?q=KE-JOB-4411');
+    $filtered->assertOk();
+    $filtered->assertSee('KE-JOB-4411');
+    $filtered->assertSee('Luxury Tote Paper Bag');
+    $filtered->assertDontSee('KE-JOB-5522');
+});

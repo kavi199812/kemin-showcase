@@ -78,8 +78,15 @@
                 >
                     Companies
                 </a>
+                <a
+                    href="{{ route('showcase.job-numbers.index') }}"
+                    wire:navigate
+                    class="px-3.5 py-2 text-xs font-sans font-semibold uppercase tracking-widest transition-colors {{ request()->routeIs('showcase.job-numbers.*') ? 'text-gold-400 border-b-2 border-gold-500' : 'text-ink-300 hover:text-white' }}"
+                >
+                    Job Number
+                </a>
 
-                <!-- Desktop Search Bar right after Companies -->
+                <!-- Desktop Search Bar right after Job Number -->
                 <div class="pl-1.5 lg:pl-3">
                     <livewire:showcase.header-search />
                 </div>
@@ -117,6 +124,7 @@
             <a href="{{ route('showcase.home') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.home') ? 'text-gold-400' : 'text-ink-300' }}">Home</a>
             <a href="{{ route('showcase.products.index') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.products.*') ? 'text-gold-400' : 'text-ink-300' }}">Products</a>
             <a href="{{ route('showcase.companies.index') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.companies.*') ? 'text-gold-400' : 'text-ink-300' }}">Companies</a>
+            <a href="{{ route('showcase.job-numbers.index') }}" wire:navigate class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider {{ request()->routeIs('showcase.job-numbers.*') ? 'text-gold-400' : 'text-ink-300' }}">Job Number</a>
             <form action="{{ route('lock') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit" class="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-danger flex items-center gap-1">
