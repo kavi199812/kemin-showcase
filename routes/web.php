@@ -97,7 +97,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     })->name('logout');
 });
 
-// Fallback route to serve uploaded public storage files when symlink is not present on production/shared hosting
+// Fallback route to serve uploaded public storage files
 Route::get('/storage/{path}', function (string $path) {
     if (str_contains($path, '..')) {
         abort(404);
@@ -105,11 +105,37 @@ Route::get('/storage/{path}', function (string $path) {
 
     $filePath = storage_path('app/public/'.$path);
     if (! is_file($filePath)) {
-        abort(404);
+        abort(404, "Not on disk: ".$filePath);
     }
 
     return response()->file($filePath);
 })->where('path', '.*')->name('storage.fallback');
+
+Route::get('/public/storage/{path}', function (string $path) {
+    if (str_contains($path, '..')) {
+        abort(404);
+    }
+
+    $filePath = storage_path('app/public/'.$path);
+    if (! is_file($filePath)) {
+        abort(404, "Not on disk: ".$filePath);
+    }
+
+    return response()->file($filePath);
+})->where('path', '.*');
+
+Route::get('/media-stream/{path}', function (string $path) {
+    if (str_contains($path, '..')) {
+        abort(404);
+    }
+
+    $filePath = storage_path('app/public/'.$path);
+    if (! is_file($filePath)) {
+        abort(404, "Not on disk: ".$filePath);
+    }
+
+    return response()->file($filePath);
+})->where('path', '.*');
 
 // Hostinger / Shared hosting helper to create symlink, clear cache, and report diagnostics
 Route::get('/link-storage', function () {
@@ -150,12 +176,18 @@ Route::get('/link-storage', function () {
     $messages[] = 'Items in storage/app/public: '.count($files).' ['.implode(', ', $files).']';
     $messages[] = 'Public Disk URL: '.config('filesystems.disks.public.url');
 
-    // Inspect files in folders 4, 5, 6
-    foreach ([4, 5, 6] as $dirId) {
+    // Inspect files in folders 16, 17, 18
+    $firstFoundFileRel = '';
+    foreach ([16, 17, 18] as $dirId) {
         $dirPath = $storagePublicPath.'/'.$dirId;
         if (is_dir($dirPath)) {
             $subFiles = array_diff(scandir($dirPath), ['.', '..']);
             $messages[] = "Folder {$dirId} files: [".implode(', ', $subFiles).']';
+            foreach ($subFiles as $sf) {
+                if ($sf !== 'conversions' && is_file($dirPath.'/'.$sf) && ! $firstFoundFileRel) {
+                    $firstFoundFileRel = "{$dirId}/{$sf}";
+                }
+            }
             if (is_dir($dirPath.'/conversions')) {
                 $convFiles = array_diff(scandir($dirPath.'/conversions'), ['.', '..']);
                 $messages[] = "Folder {$dirId}/conversions: [".implode(', ', $convFiles).']';
@@ -185,13 +217,20 @@ Route::get('/link-storage', function () {
         }
     }
 
+    $streamTestUrl = $firstFoundFileRel ? url('/media-stream/'.$firstFoundFileRel) : '';
+    $storageTestUrl = $firstFoundFileRel ? url('/storage/'.$firstFoundFileRel) : '';
+
     $textOutput = implode("\n", $messages);
     $html = "<!DOCTYPE html><html><body style='font-family: monospace; background: #111; color: #eee; padding: 20px;'>";
     $html .= "<pre>".e($textOutput)."</pre>";
-    if ($testImageUrl) {
-        $html .= "<h3>Direct Image Test (Attempting to load: {$testImageUrl}):</h3>";
-        $html .= "<div style='border: 2px solid #555; display: inline-block; padding: 10px; background: #222;'>";
-        $html .= "<img src='{$testImageUrl}' style='max-width: 400px; max-height: 300px; display: block;' onerror=\"this.outerHTML='<b style=color:red>IMAGE FAILED TO LOAD! Check browser console (F12) Network tab for HTTP status (403, 404, etc.)</b>'\">";
+    $html .= "<h3>File Tests:</h3>";
+    if ($firstFoundFileRel) {
+        $html .= "<p>First file detected: <code>{$firstFoundFileRel}</code></p>";
+        $html .= "<p>1. Test via /media-stream route: <a href='{$streamTestUrl}' target='_blank' style='color:#68d391'>{$streamTestUrl}</a></p>";
+        $html .= "<p>2. Test via /storage route: <a href='{$storageTestUrl}' target='_blank' style='color:#68d391'>{$storageTestUrl}</a></p>";
+        $html .= "<div style='display:flex; gap:20px; margin-top:15px;'>";
+        $html .= "<div><b>Preview via /media-stream:</b><br><img src='{$streamTestUrl}' style='max-width:300px; max-height:200px; display:block; border:1px solid #444; margin-top:5px;' onerror=\"this.outerHTML='<b style=color:red>FAILED /media-stream</b>'\"></div>";
+        $html .= "<div><b>Preview via /storage:</b><br><img src='{$storageTestUrl}' style='max-width:300px; max-height:200px; display:block; border:1px solid #444; margin-top:5px;' onerror=\"this.outerHTML='<b style=color:red>FAILED /storage</b>'\"></div>";
         $html .= "</div>";
     }
     $html .= "</body></html>";
