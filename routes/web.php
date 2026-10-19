@@ -147,10 +147,55 @@ Route::get('/link-storage', function () {
     $storagePublicPath = storage_path('app/public');
     $messages[] = 'Storage App Public Path: '.$storagePublicPath.' (Exists: '.(is_dir($storagePublicPath) ? 'Yes' : 'No').')';
     $files = is_dir($storagePublicPath) ? array_diff(scandir($storagePublicPath), ['.', '..']) : [];
-    $messages[] = 'Items in storage/app/public: '.count($files).' ['.implode(', ', array_slice($files, 0, 10)).']';
+    $messages[] = 'Items in storage/app/public: '.count($files).' ['.implode(', ', $files).']';
     $messages[] = 'Public Disk URL: '.config('filesystems.disks.public.url');
 
-    return response(implode("\n", $messages), 200)
-        ->header('Content-Type', 'text/plain');
+    // Inspect files in folders 4, 5, 6
+    foreach ([4, 5, 6] as $dirId) {
+        $dirPath = $storagePublicPath.'/'.$dirId;
+        if (is_dir($dirPath)) {
+            $subFiles = array_diff(scandir($dirPath), ['.', '..']);
+            $messages[] = "Folder {$dirId} files: [".implode(', ', $subFiles).']';
+            if (is_dir($dirPath.'/conversions')) {
+                $convFiles = array_diff(scandir($dirPath.'/conversions'), ['.', '..']);
+                $messages[] = "Folder {$dirId}/conversions: [".implode(', ', $convFiles).']';
+            } else {
+                $messages[] = "Folder {$dirId}/conversions does NOT exist!";
+            }
+        } else {
+            $messages[] = "Folder {$dirId} does NOT exist!";
+        }
+    }
+
+    // Inspect first product media URLs
+    $product = \App\Models\Product::with('media')->first();
+    $testImageUrl = '';
+    if ($product) {
+        $messages[] = "Product: {$product->name}";
+        $mediaItems = $product->getMedia('gallery');
+        $messages[] = 'Gallery Media Count: '.count($mediaItems);
+        foreach ($mediaItems as $idx => $m) {
+            $messages[] = "Media #{$m->id}: file_name={$m->file_name}, disk={$m->disk}";
+            $messages[] = "  getUrl(): ".$m->getUrl();
+            $messages[] = "  getUrl('card'): ".$m->getUrl('card');
+            $messages[] = "  hasGeneratedConversion('card'): ".($m->hasGeneratedConversion('card') ? 'true' : 'false');
+            if ($idx === 0) {
+                $testImageUrl = $m->hasGeneratedConversion('card') ? $m->getUrl('card') : $m->getUrl();
+            }
+        }
+    }
+
+    $textOutput = implode("\n", $messages);
+    $html = "<!DOCTYPE html><html><body style='font-family: monospace; background: #111; color: #eee; padding: 20px;'>";
+    $html .= "<pre>".e($textOutput)."</pre>";
+    if ($testImageUrl) {
+        $html .= "<h3>Direct Image Test (Attempting to load: {$testImageUrl}):</h3>";
+        $html .= "<div style='border: 2px solid #555; display: inline-block; padding: 10px; background: #222;'>";
+        $html .= "<img src='{$testImageUrl}' style='max-width: 400px; max-height: 300px; display: block;' onerror=\"this.outerHTML='<b style=color:red>IMAGE FAILED TO LOAD! Check browser console (F12) Network tab for HTTP status (403, 404, etc.)</b>'\">";
+        $html .= "</div>";
+    }
+    $html .= "</body></html>";
+
+    return response($html, 200)->header('Content-Type', 'text/html');
 });
 
