@@ -69,6 +69,12 @@
                 >
                     Activity Log
                 </a>
+                <a
+                    href="{{ route('admin.bulk-import') }}"
+                    class="px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors {{ request()->routeIs('admin.bulk-import*') ? 'text-gold-400 bg-ink-900 border-b-2 border-gold-500' : 'text-ink-300 hover:text-white hover:bg-ink-900' }}"
+                >
+                    Bulk Import
+                </a>
             </nav>
 
             <div class="flex items-center gap-4">
@@ -103,6 +109,7 @@
             <a href="{{ route('admin.categories.index') }}" class="px-2 py-1 {{ request()->routeIs('admin.categories.*') ? 'text-gold-400 font-bold' : 'text-ink-300' }}">Categories</a>
             <a href="{{ route('admin.settings.index') }}" class="px-2 py-1 {{ request()->routeIs('admin.settings.*') ? 'text-gold-400 font-bold' : 'text-ink-300' }}">Settings</a>
             <a href="{{ route('admin.activity.index') }}" class="px-2 py-1 {{ request()->routeIs('admin.activity.*') ? 'text-gold-400 font-bold' : 'text-ink-300' }}">Activity</a>
+            <a href="{{ route('admin.bulk-import') }}" class="px-2 py-1 {{ request()->routeIs('admin.bulk-import*') ? 'text-gold-400 font-bold' : 'text-ink-300' }}">Bulk Import</a>
         </div>
     </header>
 

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\BulkImportSampleController;
 use App\Livewire\Admin\Activity\ActivityViewer;
 use App\Livewire\Admin\Categories\CategoryManager;
 use App\Livewire\Admin\Companies\CompanyForm;
 use App\Livewire\Admin\Companies\CompanyList;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Import\BulkImport;
 use App\Livewire\Admin\Products\ProductForm;
 use App\Livewire\Admin\Products\ProductList;
 use App\Livewire\Admin\Settings\SettingsManager;
@@ -89,6 +91,10 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
 
     // Activity Audit Log
     Route::get('/activity', ActivityViewer::class)->name('activity.index');
+
+    // Bulk Import (Products & Companies)
+    Route::get('/bulk-import', BulkImport::class)->name('bulk-import');
+    Route::get('/bulk-import/sample/{type}', [BulkImportSampleController::class, 'download'])->name('bulk-import.sample');
 
     // Sign out
     Route::post('/logout', function (Request $request) {

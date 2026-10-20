@@ -11,6 +11,12 @@
         </div>
 
         <div class="flex items-center gap-3">
+            <a href="{{ route('admin.bulk-import') }}" class="px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-gold-400 hover:text-white bg-ink-900 hover:bg-ink-800 border border-gold-500/30 hover:border-gold-500 rounded-sm transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span>Bulk Import</span>
+            </a>
             <a href="{{ route('admin.companies.create') }}" class="btn-primary-kemin text-xs py-2 px-5">
                 + Add Company
             </a>
